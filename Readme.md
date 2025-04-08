@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
-* Студент: [Арсений Виноградов](https://up.htmlacademy.ru/univer-js2/5/user/2504497).
-* Наставник: `Александр Сударев`.
+* Студент: [Иван Ипатов](https://up.htmlacademy.ru/univer-js2/5/user/2504573).
+* Наставник: `Владимир Вавщик`.
 
 ---
 
@@ -48,5 +48,5 @@ git clone SSH-адрес_вашего_форка
 
 Репозиторий создан для обучения на профессиональном курсе «[JavaScript. Архитектура клиентских приложений](https://htmlacademy.ru/intensive/ecmascript)» от [HTML Academy](https://htmlacademy.ru).
 
-[check-image]: https://github.com/htmlacademy-ecmascript/2504497-big-trip-5/workflows/Project%20check/badge.svg?branch=master
-[check-url]: https://github.com/htmlacademy-ecmascript/2504497-big-trip-5/actions
+[check-image]: https://github.com/htmlacademy-ecmascript/2504573-big-trip-5/workflows/Project%20check/badge.svg?branch=master
+[check-url]: https://github.com/htmlacademy-ecmascript/2504573-big-trip-5/actions
