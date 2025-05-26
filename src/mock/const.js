@@ -71,6 +71,10 @@ const UpdateType = {
   PATCH:'PATCH',
   MINOR:'MINOR',
   MAJOR:'MAJOR',
+<<<<<<< Updated upstream
+=======
+  INIT: 'INIT',
+>>>>>>> Stashed changes
 };
 const FilterType = {
   EVERYTHING:'everything',
@@ -78,4 +82,9 @@ const FilterType = {
   PRESENT:'present',
   PAST:'past',
 };
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
 export { PRICE, CITIES, HOUR, MINUTES, POINT_TYPES, FLATPICKR_CONFIG,UserAction,UpdateType,FilterType};

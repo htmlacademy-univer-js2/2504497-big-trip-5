@@ -19,7 +19,11 @@ function createNoPointTemplate(filterType) {
 export default class NoPointView extends AbstractView {
   #filterType = null;
 
+<<<<<<< Updated upstream
   constructor({filterType}) {
+=======
+  constructor({ filterType }) {
+>>>>>>> Stashed changes
     super();
     this.#filterType = filterType;
   }

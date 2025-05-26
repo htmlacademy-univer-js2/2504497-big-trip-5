@@ -1,10 +1,20 @@
+<<<<<<< Updated upstream
 import {render, replace, remove} from '../framework/render.js';
 import FilterView from '../view/filter.js';
 import { FilterType,UpdateType } from '../mock/const.js';
+=======
+import { render, replace, remove } from '../framework/render.js';
+import FilterView from '../view/filter.js';
+
+
+import { FilterType, UpdateType } from '../mock/const.js';
+
+>>>>>>> Stashed changes
 
 export default class FilterPresenter {
   #filterContainer = null;
   #filterModel = null;
+<<<<<<< Updated upstream
   #pointModel = null;
 
   #filterComponent = null;
@@ -15,6 +25,18 @@ export default class FilterPresenter {
     this.#pointModel = pointModel;
 
     this.#pointModel.addObserver(this.#handleModelEvent);
+=======
+  #pointsModel = null;
+
+  #filterComponent = null;
+
+  constructor({ filterContainer, filterModel, pointsModel }) {
+    this.#filterContainer = filterContainer;
+    this.#filterModel = filterModel;
+    this.#pointsModel = pointsModel;
+
+    this.#pointsModel.addObserver(this.#handleModelEvent);
+>>>>>>> Stashed changes
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
 

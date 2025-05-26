@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { getRandomInt } from './random';
+
 
 const WAYPOINT_DATE_FORMAT = 'DD MMM HH:mm';
 
@@ -11,19 +11,7 @@ function humanizePointDate(date) {
 function humanizeEditingFormDate(date) {
   return date ? dayjs(date).format(EDITING_FORM_DATE_FORMAT) : ' ';
 }
-function addNull(timePart) {
-  if (timePart.toString().length === 1) {
-    timePart = `0${timePart}`;
-    return timePart;
-  } return timePart;
-}
 
-function getDate() {
-  const day = getRandomInt(1, 31);
-  const month = getRandomInt(1, 12);
-
-  return `${addNull(month)}-${addNull(day)}`;
-}
 
 function getDateDifference(startDate, endDate) {
   const dateDifferenceInMinutes = dayjs(endDate).diff(dayjs(startDate), 'minute');
@@ -49,6 +37,7 @@ function getDateDifference(startDate, endDate) {
   return result.trim();
 }
 
+<<<<<<< Updated upstream
 function getRandomStartDate(date, startHour, startMinutes) {
   return `2025-${date} ${addNull(startHour)}:${addNull(startMinutes)}`;
 }
@@ -58,3 +47,6 @@ function getRandomEndDate(date, startHour, startMinutes, MINUTES) {
 }
 
 export { getDateDifference, getDate, humanizeEditingFormDate, humanizePointDate, addNull, getRandomStartDate, getRandomEndDate };
+=======
+export { getDateDifference, humanizeEditingFormDate, humanizePointDate };
+>>>>>>> Stashed changes
