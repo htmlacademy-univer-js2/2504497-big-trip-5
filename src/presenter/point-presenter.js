@@ -1,5 +1,9 @@
 import { render, replace, remove } from '../framework/render';
+<<<<<<< Updated upstream
 import StartingPoint from '../view/startingPoint';
+=======
+import StartingPointView from '../view/startingPoint';
+>>>>>>> Stashed changes
 import EditingFormView from '../view/formEdit';
 
 
@@ -15,8 +19,15 @@ export default class PointPresenter {
   #pointComponent = null;
   #pointEditComponent = null;
   #mode = Mode.DEFAULT;
+<<<<<<< Updated upstream
   #point = null;
   constructor({ listComponent, onDataChange, onModeChange }) {
+=======
+  #offers = null;
+  #point = null;
+  constructor({ listComponent, onDataChange, onModeChange, offers }) {
+    this.#offers = offers;
+>>>>>>> Stashed changes
     this.#listComponent = listComponent;
     this.#handleDataChange = onDataChange;
     this.#handleModeChange = onModeChange;
@@ -27,14 +38,25 @@ export default class PointPresenter {
 
     const prevPointComponent = this.#pointComponent;
     const prevPointEditComponent = this.#pointEditComponent;
+<<<<<<< Updated upstream
 
     this.#pointComponent = new StartingPoint({
+=======
+    this.#pointComponent = new StartingPointView({
+>>>>>>> Stashed changes
       point: this.#point,
       onButtonClick: this.#handleEditClick,
       onFavoriteClick: this.#onHandleFavoriteClick,
     });
+<<<<<<< Updated upstream
     this.#pointEditComponent = new EditingFormView({
       point: this.#point,
+=======
+
+    this.#pointEditComponent = new EditingFormView({
+      point: this.#point,
+      offers: this.#offers,
+>>>>>>> Stashed changes
       onFormSubmit: this.#handleFormSubmit,
       onFormHide: this.#handleHideForm,
     });
@@ -51,13 +73,27 @@ export default class PointPresenter {
     if (this.#mode === Mode.EDITING) {
       replace(this.#pointEditComponent, prevPointEditComponent);
     }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     remove(prevPointComponent);
     remove(prevPointEditComponent);
   }
 
+<<<<<<< Updated upstream
   resetView() {
     if (this.#mode !== Mode.DEFAULT) {
+=======
+  destroy() {
+    remove(this.#pointComponent);
+    remove(this.#pointEditComponent);
+  }
+
+  resetView() {
+    if (this.#mode !== Mode.DEFAULT) {
+      this.#pointEditComponent.reset(this.#point);
+>>>>>>> Stashed changes
       this.#replaceFormToCard();
     }
   }
@@ -71,6 +107,12 @@ export default class PointPresenter {
   }
 
   #replaceFormToCard() {
+<<<<<<< Updated upstream
+=======
+    const updatedPoint = this.#pointEditComponent.parseStateToPoint;
+    this.#point = updatedPoint;
+    this.#handleDataChange(updatedPoint);
+>>>>>>> Stashed changes
     replace(this.#pointComponent, this.#pointEditComponent);
     document.removeEventListener('keydown', this.#escKeyDownHandler);
     this.#mode = Mode.DEFAULT;
@@ -79,6 +121,10 @@ export default class PointPresenter {
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
+<<<<<<< Updated upstream
+=======
+      this.#pointEditComponent.reset(this.#point);
+>>>>>>> Stashed changes
       this.#replaceFormToCard();
     }
   };
@@ -98,6 +144,9 @@ export default class PointPresenter {
 
   #handleHideForm = () => {
     this.#replaceFormToCard();
+<<<<<<< Updated upstream
     // document.removeEventListener('keydown', this.#escKeyDownHandler);
+=======
+>>>>>>> Stashed changes
   };
 }

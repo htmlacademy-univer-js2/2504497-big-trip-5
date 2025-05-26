@@ -36,7 +36,10 @@ export default class TripPlannerPresenter {
     this.#renderTrip();
   }
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
   #renderCreationForm() {
     render(this.#creationForm, this.#listComponent.element);
   }
@@ -81,7 +84,10 @@ export default class TripPlannerPresenter {
     this.#renderSort();
     this.#renderFilter();
     this.#renderWaypointList();
+<<<<<<< Updated upstream
     this.#renderCreationForm();
+=======
+>>>>>>> Stashed changes
     this.#points.forEach((point) => {
       this.#renderPoint(point);
     });
