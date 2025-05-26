@@ -52,4 +52,30 @@ const MINUTES = {
   MIN: 0,
   MAX: 59
 };
-export { PRICE, CITIES, HOUR, MINUTES };
+const POINT_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+
+const FLATPICKR_CONFIG = {
+  dateFormat: 'd/m/y H:i',
+  enableTime: true,
+  locale: {
+    firstDayOfWeek: 1,
+  },
+  'time_24hr': true,
+};
+const UserAction = {
+  UPDATE_POINT:'UPDATE_POINT',
+  ADD_POINT:'ADD_POINT',
+  DELETE_POINT:'DELETE_POINT',
+};
+const UpdateType = {
+  PATCH:'PATCH',
+  MINOR:'MINOR',
+  MAJOR:'MAJOR',
+};
+const FilterType = {
+  EVERYTHING:'everything',
+  FUTURE:'future',
+  PRESENT:'present',
+  PAST:'past',
+};
+export { PRICE, CITIES, HOUR, MINUTES, POINT_TYPES, FLATPICKR_CONFIG,UserAction,UpdateType,FilterType};
