@@ -1,6 +1,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { RenderPosition } from '../render.js';
 import { render } from '../framework/render.js';
 import CreationFormView from '../view/formCreate.js';
@@ -56,6 +57,22 @@ import LoadingView from '../view/loading';
 
 const POINT_COUNT_PER_STEP = 5;
 >>>>>>> Stashed changes
+=======
+import {RenderPosition} from '../render.js';
+import {remove, render, replace} from '../framework/render.js';
+import CreationFormView from '../view/formCreate';
+import SortingView from '../view/sort';
+import {filter} from '../utils/filter.js';
+import StartingPointListView from '../view/startPointList';
+import TripInfoView from '../view/tripInfoView.js';
+import PointPresenter from './pointPresenter';
+import {FilterType, UpdateType, UserAction, SortType} from '../mock/const.js';
+import NoPointView from '../view/noPointView.js';
+import NewPointPresenter from './newPointPresenter.js';
+import LoadingView from '../view/loading.js';
+
+const POINT_COUNT_PER_STEP = 5;
+>>>>>>> Stashed changes
 const header = document.querySelector('.page-header');
 const tripMain = header.querySelector('.trip-main');
 const siteMainElement = document.querySelector('.page-main');
@@ -65,6 +82,7 @@ const siteContainerElement = siteMainElement.querySelector(
 
 export default class TripPlannerPresenter {
   #TripPlannerContainer = null;
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
   #pointModel = null;
@@ -232,7 +250,110 @@ export default class TripPlannerPresenter {
     const pointCount = this.points.length;
     const points = this.points.slice(0, Math.min(pointCount, this.#renderedPointCount));
     points.forEach((point) => this.#newPointPresenter.init(point, this.destinations, this.offers));
+=======
+  #pointsModel = null;
+  #filterModel = null;
+  #destinationsModel = null;
+  #offersModel = null;
+  #filterType = null;
+  #tripInfoComponent = null;
+  #tripInfoContainer = null;
+  #pointPresenters = new Map();
+  #currentSortType = SortType.DAY;
+  #sortComponent = new SortingView();
+  #noPointComponent = null;
+  #newPointPresenter = null;
+  #renderedPointCount = 0;
+  #listComponent = new StartingPointListView();
+  #creationForm = new CreationFormView();
+  #loadingComponent = new LoadingView();
+  #isLoading = true;
 
+  constructor({TripPlannerContainer, pointsModel, filterModel, destinationsModel, offersModel, onNewPointDestroy}) {
+    this.#TripPlannerContainer = TripPlannerContainer;
+    this.#pointsModel = pointsModel;
+    this.#filterModel = filterModel;
+    this.#destinationsModel = destinationsModel;
+    this.#offersModel = offersModel;
+    this.#filterType = FilterType.EVERYTHING;
+    this.#tripInfoContainer = document.querySelector('.trip-main__trip-info');
+
+    this.#newPointPresenter = new NewPointPresenter({
+      listComponent: this.#listComponent.element,
+      onDataChange: this.#handleViewAction,
+      onDestroy: onNewPointDestroy
+    });
+>>>>>>> Stashed changes
+
+    this.#pointsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
+    this.#destinationsModel.addObserver(this.#handleModelEvent);
+  }
+
+  get destinations() {
+    return this.#destinationsModel.destinations;
+  }
+
+  get offers() {
+    return this.#offersModel.offers;
+  }
+
+  get points() {
+    this.#filterType = this.#filterModel.filter;
+    const points = this.#pointsModel.points;
+    return filter[this.#filterType](points);
+  }
+
+  init() {
+    this.#renderTripInfo();
+    this.#renderTrip();
+  }
+
+  createPoint() {
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    const pointCount = this.points.length;
+    const points = this.points.slice(0, Math.min(pointCount, this.#renderedPointCount));
+    points.forEach((point) => this.#newPointPresenter.init(point, this.destinations, this.offers));
+
+  }
+
+  #renderNoPoints() {
+    this.#noPointComponent = new NoPointView({
+      filterType: this.#filterType
+    });
+    render(this.#noPointComponent, this.#listComponent.element, RenderPosition.AFTERBEGIN);
+  }
+
+  #renderCreationForm() {
+    render(this.#creationForm, this.#listComponent.element);
+  }
+
+  #renderWaypointList() {
+    render(this.#listComponent, this.#TripPlannerContainer);
+  }
+
+  #renderSort() {
+    render(this.#sortComponent, this.#TripPlannerContainer);
+  }
+
+  #renderTripInfo() {
+    const points = this.#pointsModel.points;
+    const destinations = this.#destinationsModel.destinations;
+
+    const prevTripInfoComponent = this.#tripInfoComponent;
+
+    this.#tripInfoComponent = new TripInfoView({
+      points,
+      destinations
+    });
+
+    if (prevTripInfoComponent === null) {
+      render(this.#tripInfoComponent, this.#tripInfoContainer);
+      return;
+    }
+
+    replace(this.#tripInfoComponent, prevTripInfoComponent);
+    remove(prevTripInfoComponent);
   }
 
 >>>>>>> Stashed changes
@@ -263,6 +384,7 @@ export default class TripPlannerPresenter {
   #renderPoint(point) {
     const pointPresenter = new PointPresenter({
       listComponent: this.#listComponent.element,
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -339,6 +461,16 @@ export default class TripPlannerPresenter {
   }
 
 >>>>>>> Stashed changes
+=======
+      onDataChange: this.#handleViewAction,
+      onModeChange: this.#handleModeChange,
+    });
+
+    pointPresenter.init(point, this.destinations, this.offers,);
+    this.#pointPresenters.set(point.id, pointPresenter);
+  }
+
+>>>>>>> Stashed changes
   #renderPoints(points, destinations, offers) {
     points.forEach((point) => this.#renderPoint(point, destinations, offers));
     if (this.points.length === 0) {
@@ -355,6 +487,7 @@ export default class TripPlannerPresenter {
     switch (actionType) {
       case UserAction.UPDATE_POINT:
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
         await this.#pointsModel.updatePoint(updatedType, update);
         break;
@@ -365,6 +498,8 @@ export default class TripPlannerPresenter {
         this.#pointsModel.addPoint(updatedType, update);
 >>>>>>> Stashed changes
 =======
+=======
+>>>>>>> Stashed changes
         await this.#pointsModel.updatePoint(updatedType, update);
         break;
       case UserAction.DELETE_POINT:
@@ -372,6 +507,9 @@ export default class TripPlannerPresenter {
         break;
       case UserAction.ADD_POINT:
         await this.#pointsModel.addPoint(updatedType, update);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         break;
     }
@@ -379,15 +517,23 @@ export default class TripPlannerPresenter {
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   #handleModelEvent = (updatedType,data)=>{
     switch(updatedType){
       case UpdateType.PATCH:
         this.#pointPresenters.get(data.id).init(data);
+=======
+  #handleModelEvent = (updateType, data) => {
+    switch (updateType) {
+      case UpdateType.PATCH:
+        this.#pointPresenters.get(data.id).init(data, this.#destinationsModel.destinations, this.#offersModel.offers);
+>>>>>>> Stashed changes
         break;
       case UpdateType.MINOR:
         this.#clearTripPlan();
         this.#renderTrip();
         break;
+<<<<<<< Updated upstream
     }
   };
 
@@ -414,14 +560,25 @@ export default class TripPlannerPresenter {
         break;
       case UpdateType.MAJOR:
         this.#clearTripPlan();
+=======
+      case UpdateType.MAJOR:
+        this.#clearTripPlan({resetRenderedPointCount: true, resetSortType: true});
+>>>>>>> Stashed changes
         this.#renderTrip();
         break;
       case UpdateType.INIT:
         this.#isLoading = false;
         remove(this.#loadingComponent);
+<<<<<<< Updated upstream
         this.#renderTrip(this.events, this.destinations, this.offers);
         break;
     }
+=======
+        this.#renderTrip();
+        break;
+    }
+    this.#renderTripInfo();
+>>>>>>> Stashed changes
   };
 
   #clearTripPlan({ resetRenderedPointCount = false } = {}) {
@@ -445,6 +602,9 @@ export default class TripPlannerPresenter {
   #renderLoading() {
     render(this.#loadingComponent, this.#listComponent.element, RenderPosition.AFTERBEGIN);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -452,6 +612,7 @@ export default class TripPlannerPresenter {
 
   #renderTrip() {
     const points = this.points;
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
     const pointCount = points.length;
@@ -482,6 +643,19 @@ export { TripPlannerPresenter, siteContainerElement, tripMain };
 >>>>>>> Stashed changes
 =======
     this.#renderTripInfo();
+    this.#renderSort();
+    this.#renderWaypointList();
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
+    this.#renderPoints(points);
+  }
+}
+
+export { TripPlannerPresenter, siteContainerElement, tripMain };
+>>>>>>> Stashed changes
+=======
     this.#renderSort();
     this.#renderWaypointList();
     if (this.#isLoading) {

@@ -39,6 +39,7 @@ function getDateDifference(startDate, endDate) {
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 function getRandomStartDate(date, startHour, startMinutes) {
   return `2025-${date} ${addNull(startHour)}:${addNull(startMinutes)}`;
 }
@@ -48,6 +49,9 @@ function getRandomEndDate(date, startHour, startMinutes, MINUTES) {
 }
 
 export { getDateDifference, getDate, humanizeEditingFormDate, humanizePointDate, addNull, getRandomStartDate, getRandomEndDate };
+=======
+export { getDateDifference, humanizeEditingFormDate, humanizePointDate };
+>>>>>>> Stashed changes
 =======
 export { getDateDifference, humanizeEditingFormDate, humanizePointDate };
 >>>>>>> Stashed changes

@@ -55,9 +55,14 @@ export default class NewPointPresenter {
   }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   #handleFormSubmit = (point) => {
 
     this.#handleDataChange(
+=======
+  #handleFormSubmit = async (point) => {
+    await this.#handleDataChange(
+>>>>>>> Stashed changes
 =======
   #handleFormSubmit = async (point) => {
     await this.#handleDataChange(

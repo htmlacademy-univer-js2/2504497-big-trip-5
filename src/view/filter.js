@@ -1,7 +1,12 @@
 import AbstractView from '../framework/view/abstract-view.js';
 
 function createFilterItemTemplate(filter, currentFilterType) {
+<<<<<<< Updated upstream
   const {type} = filter;
+=======
+  const {type, count} = filter;
+  const isDisabled = count === 0;
+>>>>>>> Stashed changes
 
   return ` <div class="trip-filters__filter">
                   <input
@@ -10,7 +15,11 @@ function createFilterItemTemplate(filter, currentFilterType) {
                     type="radio"
                     name="trip-filter"
                     ${type === currentFilterType ? 'checked' : ''}
+<<<<<<< Updated upstream
 
+=======
+                    ${isDisabled ? 'disabled' : ''}
+>>>>>>> Stashed changes
                     value="${type}"
                   />
                   <label
@@ -19,6 +28,24 @@ function createFilterItemTemplate(filter, currentFilterType) {
                     >${type}</label
                   >
                 </div>`;
+<<<<<<< Updated upstream
+=======
+}
+
+function createFilterTemplate(filterItems, currentFilterType) {
+  const filterItemsTemplate = filterItems
+    .map((filter) => createFilterItemTemplate(filter, currentFilterType))
+    .join('');
+
+  return (
+    `<form class="trip-filters" action="#" method="get">
+    ${filterItemsTemplate}
+<button class="visually-hidden" type="submit">
+        Accept filter
+      </button>
+    </form>`
+  );
+>>>>>>> Stashed changes
 }
 
 function createFilterTemplate(filterItems, currentFilterType) {
