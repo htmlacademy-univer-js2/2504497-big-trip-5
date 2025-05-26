@@ -72,6 +72,10 @@ const UpdateType = {
   MINOR:'MINOR',
   MAJOR:'MAJOR',
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+  INIT: 'INIT',
+>>>>>>> Stashed changes
 =======
   INIT: 'INIT',
 >>>>>>> Stashed changes
@@ -83,6 +87,11 @@ const FilterType = {
   PAST:'past',
 };
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
 =======
 
 

@@ -1,5 +1,6 @@
 import { FilterType } from '../mock/const';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import dayjs from 'dayjs';
 
 const filter = {
@@ -10,6 +11,8 @@ const filter = {
 };
 
 =======
+=======
+>>>>>>> Stashed changes
 
 import dayjs from 'dayjs';
 const filter = {
@@ -20,5 +23,8 @@ const filter = {
 };
 
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 export {filter};

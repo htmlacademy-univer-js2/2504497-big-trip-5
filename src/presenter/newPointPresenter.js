@@ -54,9 +54,14 @@ export default class NewPointPresenter {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   }
 
+<<<<<<< Updated upstream
   #handleFormSubmit = (point) => {
 
     this.#handleDataChange(
+=======
+  #handleFormSubmit = async (point) => {
+    await this.#handleDataChange(
+>>>>>>> Stashed changes
       UserAction.ADD_POINT,
       UpdateType.MINOR,
       { ...point, id: nanoid() },

@@ -1,4 +1,5 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { mockDestinations } from '../mock/destination';
 import { mockOffers } from '../mock/offers';
 
@@ -20,6 +21,8 @@ const setSaveButtonDisabled = () => {
 };
 export { getOffersByType, getDestinationById, getDestinationByCityName, setSaveButtonDisabled };
 =======
+=======
+>>>>>>> Stashed changes
 // import { mockDestinations } from '../mock/destination';
 // import { mockOffers } from '../mock/offers';
 //
@@ -40,4 +43,7 @@ export { getOffersByType, getDestinationById, getDestinationByCityName, setSaveB
 //
 // };
 // export { getOffersByType, getDestinationById, getDestinationByCityName, setSaveButtonDisabled };
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes

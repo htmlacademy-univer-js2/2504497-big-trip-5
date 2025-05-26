@@ -1,4 +1,5 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { humanizeEditingFormDate } from '../utils/date.js';
 import { getDestinationById, getOffersByType, getDestinationByCityName, setSaveButtonDisabled } from '../utils/mock.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
@@ -37,10 +38,34 @@ function createEditingFormTemplate(point, offersArr, destinations) {
 
 =======
 >>>>>>> Stashed changes
+=======
+import {humanizeEditingFormDate} from '../utils/date.js';
+import {setSaveButtonDisabled} from '../utils/mock.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
+import {FLATPICKR_CONFIG, POINT_TYPES} from '../mock/const.js';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
+
+function createEditingFormTemplate(point, offersArr, destinations) {
+  const { type, price, startDate, endDate, destinationID, } = point;
+
+  const dateStart = humanizeEditingFormDate(startDate);
+  const dateEnd = humanizeEditingFormDate(endDate);
+  const offers = offersArr ? offersArr.find((offer) => offer.type === point.type).offers : {};
+
+  const destination = destinations.find((dest) => dest.id === destinationID) || {};
+  const destinationName = destination.name || '';
+  const destinationsDescription = destination.description || '';
+  const destinationsListTemplate = destinations
+    .map((dest) => `<option value="${dest.name}"></option>`).join('');
+
+
+>>>>>>> Stashed changes
   const offersTemplate = offers
     .map((offer) => {
       const checked = point.offers.includes(offer.id) ? 'checked' : '';
       return `<div class="event__offer-selector">
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
         <input class="event__offer-checkbox  visually-hidden" id="${offer.id}" type="checkbox" name="event-offer-comfort" ${checked}>
         <label class="event__offer-label" for="${offer.id}">
@@ -51,6 +76,18 @@ function createEditingFormTemplate(point, offersArr, destinations) {
       </div>`;
     })
     .join('');
+=======
+      <input class="event__offer-checkbox  visually-hidden" id="${offer.id}" type="checkbox" name="event-offer-comfort" ${checked}>
+      <label class="event__offer-label" for="${offer.id}">
+      <span class="event__offer-title">${offer.title}</span>
+      &plus;&euro;&nbsp;
+      <span class="event__offer-price">${offer.price}</span>
+      </label>
+    </div>`;
+    })
+    .join('');
+
+>>>>>>> Stashed changes
 =======
       <input class="event__offer-checkbox  visually-hidden" id="${offer.id}" type="checkbox" name="event-offer-comfort" ${checked}>
       <label class="event__offer-label" for="${offer.id}">
@@ -95,6 +132,7 @@ function createEditingFormTemplate(point, offersArr, destinations) {
                     <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destinationName}" list="destination-list-1">
                     <datalist id="destination-list-1">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                       <option value="Los Angeles"></option>
                       <option value="">New York</option>
                       <option value="">Chicago</option>
@@ -106,6 +144,9 @@ function createEditingFormTemplate(point, offersArr, destinations) {
                       <option value="">Dallas</option>
                       <option value="San Francisco"></option>
 
+=======
+                      ${destinationsListTemplate}
+>>>>>>> Stashed changes
 =======
                       ${destinationsListTemplate}
 >>>>>>> Stashed changes
@@ -155,6 +196,7 @@ function createEditingFormTemplate(point, offersArr, destinations) {
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 export default class EditingFormView extends AbstractView {
   #point = null;
   #handleFormSubmit = null;
@@ -174,6 +216,9 @@ export default class EditingFormView extends AbstractView {
 =======
 
 >>>>>>> Stashed changes
+=======
+
+>>>>>>> Stashed changes
 export default class EditingFormView extends AbstractStatefulView {
   #handleFormSubmit = null;
   #datepickerStart = null;
@@ -181,12 +226,15 @@ export default class EditingFormView extends AbstractStatefulView {
   #handleHideForm = null;
   #handleDeleteClick = null;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
   constructor({point, onFormSubmit, onFormHide, onDeleteClick }) {
     super();
     this._setState({ ...point });
 
 =======
+=======
+>>>>>>> Stashed changes
   #offers = null;
   #destinations = null;
   constructor({ point, offers, destinations, onFormSubmit, onFormHide, onDeleteClick }) {
@@ -194,12 +242,16 @@ export default class EditingFormView extends AbstractStatefulView {
     this._setState({ ...point });
     this.#offers = offers;
     this.#destinations = destinations;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     this.#handleFormSubmit = onFormSubmit;
     this.#handleDeleteClick = onDeleteClick;
     this.#handleHideForm = onFormHide;
 
     this._restoreHandlers();
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 >>>>>>> Stashed changes
   }
@@ -252,6 +304,14 @@ export default class EditingFormView extends AbstractStatefulView {
 >>>>>>> Stashed changes
   }
 
+=======
+  }
+
+  get template() {
+    return createEditingFormTemplate(this._state, this.#offers, this.#destinations);
+  }
+
+>>>>>>> Stashed changes
   get destinations() {
     return this.#destinations;
   }
@@ -306,9 +366,14 @@ export default class EditingFormView extends AbstractStatefulView {
     evt.preventDefault();
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     this.#handleFormSubmit(this.#point);
 =======
     this.#handleFormSubmit(this._state.point);
+>>>>>>> Stashed changes
+=======
+    const updatedPoint = this.parseStateTo(this._state);
+    this.#handleFormSubmit(updatedPoint);
 >>>>>>> Stashed changes
 =======
     const updatedPoint = this.parseStateTo(this._state);
@@ -339,7 +404,11 @@ export default class EditingFormView extends AbstractStatefulView {
     const cityName = evt.target.value;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     const destination = getDestinationByCityName(cityName);
+=======
+    const destination = this.destinations.find((dest) => dest.name === cityName);
+>>>>>>> Stashed changes
 =======
     const destination = this.destinations.find((dest) => dest.name === cityName);
 >>>>>>> Stashed changes
@@ -382,9 +451,13 @@ export default class EditingFormView extends AbstractStatefulView {
   #closeDateEndHandler = ([date]) => {
     this.updateElement({
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
       endDate: date,
 
+=======
+      endDate: date,
+>>>>>>> Stashed changes
 =======
       endDate: date,
 >>>>>>> Stashed changes
@@ -409,7 +482,11 @@ export default class EditingFormView extends AbstractStatefulView {
   };
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   #formDeleteClickHandler = (evt) =>{
+=======
+  #formDeleteClickHandler = (evt) => {
+>>>>>>> Stashed changes
 =======
   #formDeleteClickHandler = (evt) => {
 >>>>>>> Stashed changes

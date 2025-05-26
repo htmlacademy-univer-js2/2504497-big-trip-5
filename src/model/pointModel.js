@@ -1,6 +1,11 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { getRandomPoint } from '../mock/point.js';
 import Observable from '../framework/observable.js';
+=======
+import Observable from '../framework/observable.js';
+import { UpdateType } from '../mock/const.js';
+>>>>>>> Stashed changes
 =======
 import Observable from '../framework/observable.js';
 import { UpdateType } from '../mock/const.js';
@@ -9,6 +14,7 @@ import { UpdateType } from '../mock/const.js';
 export default class PointsModel extends Observable {
   #points = [];
   #pointsApiService = null;
+<<<<<<< Updated upstream
 
   constructor({ pointsApiService }) {
     super();
@@ -23,10 +29,21 @@ export default class PointsModel extends Observable {
 
 =======
 >>>>>>> Stashed changes
+=======
+
+  constructor({ pointsApiService }) {
+    super();
+
+    this.#pointsApiService = pointsApiService;
+
+  }
+
+>>>>>>> Stashed changes
   get points() {
     return this.#points;
   }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   set points(points){
     this.#points = points;
@@ -45,6 +62,8 @@ export default class PointsModel extends Observable {
 
     this._notify(updatedType,update);
 =======
+=======
+>>>>>>> Stashed changes
   async init() {
     try {
       const points = await this.#pointsApiService.points;
@@ -73,6 +92,7 @@ export default class PointsModel extends Observable {
 
     this._notify(updatedType, update);
 
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
   }
 
@@ -100,13 +120,30 @@ export default class PointsModel extends Observable {
 
 =======
   deletePoint(updatedType, update) {
+=======
+  }
+
+  async addPoint(updateType, update) {
+    const response = await this.#pointsApiService.addPoint(update);
+    const newPoint = this.#adaptToClient(response);
+    this.#points = [newPoint, ...this.#points];
+    this._notify(updateType, newPoint);
+  }
+
+  async deletePoint(updatedType, update) {
+    await this.#pointsApiService.deletePoint(update);
+>>>>>>> Stashed changes
     const index = this.#points.findIndex((point) => point.id === update.id);
     if (index === -1) {
       throw new Error('Can\' delete unexisting point');
     }
+<<<<<<< Updated upstream
 
     this.#points.splice(index, 1);
 
+=======
+    this.#points.splice(index, 1);
+>>>>>>> Stashed changes
     this._notify(updatedType);
   }
 
@@ -126,6 +163,9 @@ export default class PointsModel extends Observable {
     delete adaptedTask['is_favorite'];
 
     return adaptedTask;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   }
 }

@@ -1,5 +1,6 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { RenderPosition } from '../render.js';
 import { render } from '../framework/render.js';
 import CreationFormView from '../view/formCreate.js';
@@ -39,6 +40,22 @@ import LoadingView from '../view/loading';
 
 const POINT_COUNT_PER_STEP = 5;
 >>>>>>> Stashed changes
+=======
+import {RenderPosition} from '../render.js';
+import {remove, render} from '../framework/render.js';
+import CreationFormView from '../view/formCreate';
+import SortingView from '../view/sort';
+import {filter} from '../utils/filter.js';
+import StartingPointListView from '../view/startPointList';
+import TripInfoView from '../view/tripInfo';
+import PointPresenter from './pointPresenter';
+import {FilterType, UpdateType, UserAction} from '../mock/const.js';
+import NoPointView from '../view/noPointView.js';
+import NewPointPresenter from './newPointPresenter';
+import LoadingView from '../view/loading';
+
+const POINT_COUNT_PER_STEP = 5;
+>>>>>>> Stashed changes
 const header = document.querySelector('.page-header');
 const tripMain = header.querySelector('.trip-main');
 const siteMainElement = document.querySelector('.page-main');
@@ -48,6 +65,7 @@ const siteContainerElement = siteMainElement.querySelector(
 
 export default class TripPlannerPresenter {
   #TripPlannerContainer = null;
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   #pointModel = null;
   #sortComponent = new SortingView();
@@ -60,18 +78,24 @@ export default class TripPlannerPresenter {
   constructor({ TripPlannerContainer, pointModel }) {
 =======
 =======
+=======
+>>>>>>> Stashed changes
   #pointsModel = null;
   #destinationsModel = null;
   #offersModel = null;
 
   #sortComponent = new SortingView();
   #tripInfoView = new TripInfoView();
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   #filterModel = null;
   #noPointComponent = null;
   #creationForm = new CreationFormView();
   #renderedPointCount = POINT_COUNT_PER_STEP;
   #pointPresenters = new Map();
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   #filterType = FilterType.EVERYTHING;
   constructor({ TripPlannerContainer, pointModel,filterModel }) {
@@ -142,6 +166,30 @@ export default class TripPlannerPresenter {
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
+=======
+  #newPointPresenter = null;
+  #loadingComponent = new LoadingView();
+  #isLoading = true;
+
+  #filterType = FilterType.EVERYTHING;
+  #listComponent = new StartingPointListView();
+  constructor({ TripPlannerContainer, pointsModel, filterModel, onNewPointDestroy, destinationsModel, offersModel, }) {
+    this.#TripPlannerContainer = TripPlannerContainer;
+    this.#pointsModel = pointsModel;
+    this.#filterModel = filterModel;
+    this.#offersModel = offersModel;
+    this.#destinationsModel = destinationsModel;
+
+    this.#newPointPresenter = new NewPointPresenter({
+      listComponent: this.#listComponent.element,
+      onDataChange: this.#handleViewAction,
+      onDestroy: onNewPointDestroy
+    });
+    this.#pointsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
+  }
+
+>>>>>>> Stashed changes
   get destinations() {
     return this.#destinationsModel.destinations;
   }
@@ -154,11 +202,15 @@ export default class TripPlannerPresenter {
     this.#filterType = this.#filterModel.filter;
     const points = this.#pointsModel.points;
     return filter[this.#filterType](points);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   }
 
   init() {
     this.#renderTrip();
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 =======
   }
@@ -172,6 +224,18 @@ export default class TripPlannerPresenter {
 >>>>>>> Stashed changes
   }
 
+=======
+  }
+
+  createPoint() {
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    const pointCount = this.points.length;
+    const points = this.points.slice(0, Math.min(pointCount, this.#renderedPointCount));
+    points.forEach((point) => this.#newPointPresenter.init(point, this.destinations, this.offers));
+
+  }
+
+>>>>>>> Stashed changes
   #renderNoPoints() {
     this.#noPointComponent = new NoPointView({
       filterType: this.#filterType
@@ -199,6 +263,7 @@ export default class TripPlannerPresenter {
   #renderPoint(point) {
     const pointPresenter = new PointPresenter({
       listComponent: this.#listComponent.element,
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
       onDataChange: this.#handlePointChange,
@@ -264,6 +329,16 @@ export default class TripPlannerPresenter {
     this.#pointPresenters.set(point.id, pointPresenter);
   }
 
+=======
+      onDataChange: this.#handleViewAction,
+      onModeChange: this.#handleModeChange,
+    });
+
+    pointPresenter.init(point, this.destinations, this.offers,);
+    this.#pointPresenters.set(point.id, pointPresenter);
+  }
+
+>>>>>>> Stashed changes
   #renderPoints(points, destinations, offers) {
     points.forEach((point) => this.#renderPoint(point, destinations, offers));
     if (this.points.length === 0) {
@@ -279,6 +354,7 @@ export default class TripPlannerPresenter {
   #handleViewAction = async (actionType, updatedType, update) => {
     switch (actionType) {
       case UserAction.UPDATE_POINT:
+<<<<<<< Updated upstream
 
         await this.#pointsModel.updatePoint(updatedType, update);
         break;
@@ -288,10 +364,20 @@ export default class TripPlannerPresenter {
       case UserAction.ADD_POINT:
         this.#pointsModel.addPoint(updatedType, update);
 >>>>>>> Stashed changes
+=======
+        await this.#pointsModel.updatePoint(updatedType, update);
+        break;
+      case UserAction.DELETE_POINT:
+        await this.#pointsModel.deletePoint(updatedType, update);
+        break;
+      case UserAction.ADD_POINT:
+        await this.#pointsModel.addPoint(updatedType, update);
+>>>>>>> Stashed changes
         break;
     }
   };
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   #handleModelEvent = (updatedType,data)=>{
     switch(updatedType){
@@ -315,6 +401,8 @@ export default class TripPlannerPresenter {
     }
     this.#renderedPointCount = Math.min(pointCount, this.#renderedPointCount);
 =======
+=======
+>>>>>>> Stashed changes
   #handleModelEvent = (updatedType, data) => {
     switch (updatedType) {
       case UpdateType.PATCH:
@@ -356,11 +444,15 @@ export default class TripPlannerPresenter {
 
   #renderLoading() {
     render(this.#loadingComponent, this.#listComponent.element, RenderPosition.AFTERBEGIN);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   }
 
   #renderTrip() {
     const points = this.points;
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     const pointCount = points.length;
     this.#renderTripInfo();
@@ -374,6 +466,20 @@ export default class TripPlannerPresenter {
 }
 
 export { TripPlannerPresenter, siteContainerElement,tripMain };
+=======
+    this.#renderTripInfo();
+    this.#renderSort();
+    this.#renderWaypointList();
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
+    this.#renderPoints(points);
+  }
+}
+
+export { TripPlannerPresenter, siteContainerElement, tripMain };
+>>>>>>> Stashed changes
 =======
     this.#renderTripInfo();
     this.#renderSort();
