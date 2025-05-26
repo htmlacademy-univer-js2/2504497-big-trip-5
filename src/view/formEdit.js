@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import { humanizeEditingFormDate } from '../utils/date.js';
 import { getDestinationById, getOffersByType, getDestinationByCityName, setSaveButtonDisabled } from '../utils/mock.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
@@ -8,16 +9,39 @@ import 'flatpickr/dist/flatpickr.min.css';
 function createEditingFormTemplate(point) {
   const { type, price, startDate, endDate } = point;
 
+=======
+import {humanizeEditingFormDate} from '../utils/date.js';
+import {setSaveButtonDisabled} from '../utils/mock.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
+import {FLATPICKR_CONFIG, POINT_TYPES} from '../mock/const.js';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
+
+function createEditingFormTemplate(point, offersArr, destinations) {
+  const { type, price, startDate, endDate, destinationID, } = point;
+
+>>>>>>> Stashed changes
   const dateStart = humanizeEditingFormDate(startDate);
   const dateEnd = humanizeEditingFormDate(endDate);
-  const destination = getDestinationById(point);
+  const offers = offersArr ? offersArr.find((offer) => offer.type === point.type).offers : {};
 
+  const destination = destinations.find((dest) => dest.id === destinationID) || {};
+  const destinationName = destination.name || '';
+  const destinationsDescription = destination.description || '';
+  const destinationsListTemplate = destinations
+    .map((dest) => `<option value="${dest.name}"></option>`).join('');
+
+
+<<<<<<< Updated upstream
   const offers = getOffersByType(point);
 
+=======
+>>>>>>> Stashed changes
   const offersTemplate = offers
     .map((offer) => {
       const checked = point.offers.includes(offer.id) ? 'checked' : '';
       return `<div class="event__offer-selector">
+<<<<<<< Updated upstream
         <input class="event__offer-checkbox  visually-hidden" id="${offer.id}" type="checkbox" name="event-offer-comfort" ${checked}>
         <label class="event__offer-label" for="${offer.id}">
         <span class="event__offer-title">${offer.title}</span>
@@ -27,6 +51,18 @@ function createEditingFormTemplate(point) {
       </div>`;
     })
     .join('');
+=======
+      <input class="event__offer-checkbox  visually-hidden" id="${offer.id}" type="checkbox" name="event-offer-comfort" ${checked}>
+      <label class="event__offer-label" for="${offer.id}">
+      <span class="event__offer-title">${offer.title}</span>
+      &plus;&euro;&nbsp;
+      <span class="event__offer-price">${offer.price}</span>
+      </label>
+    </div>`;
+    })
+    .join('');
+
+>>>>>>> Stashed changes
   const pointTypeTemplate = POINT_TYPES.map((pointType) => `
    <div class="event__type-item">
                           <input id="event-type-${pointType}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${pointType}">
@@ -54,10 +90,11 @@ function createEditingFormTemplate(point) {
 
                   <div class="event__field-group  event__field-group--destination">
                     <label class="event__label  event__type-output" for="event-destination-1">
-                    ${type}
+                    ${type} ${destinationName}
                     </label>
-                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination.cityName}" list="destination-list-1">
+                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destinationName}" list="destination-list-1">
                     <datalist id="destination-list-1">
+<<<<<<< Updated upstream
                       <option value="Los Angeles"></option>
                       <option value="">New York</option>
                       <option value="">Chicago</option>
@@ -69,6 +106,9 @@ function createEditingFormTemplate(point) {
                       <option value="">Dallas</option>
                       <option value="San Francisco"></option>
 
+=======
+                      ${destinationsListTemplate}
+>>>>>>> Stashed changes
                     </datalist>
                   </div>
 
@@ -99,13 +139,13 @@ function createEditingFormTemplate(point) {
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
                     <div class="event__available-offers">
-                      ${offersTemplate}
+                  ${offersTemplate}
                     </div>
                   </section>
 
                   <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-                    <p class="event__destination-description">${destination.description}</p>
+                    <p class="event__destination-description">${destinationsDescription}</p>
                   </section>
                 </section>
               </form>
@@ -113,6 +153,7 @@ function createEditingFormTemplate(point) {
 `;
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 export default class EditingFormView extends AbstractView {
   #point = null;
@@ -130,22 +171,36 @@ export default class EditingFormView extends AbstractView {
     this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
 =======
 
+=======
+
+>>>>>>> Stashed changes
 export default class EditingFormView extends AbstractStatefulView {
   #handleFormSubmit = null;
   #datepickerStart = null;
   #datepickerEnd = null;
   #handleHideForm = null;
   #handleDeleteClick = null;
+<<<<<<< Updated upstream
 
   constructor({point, onFormSubmit, onFormHide, onDeleteClick }) {
     super();
     this._setState({ ...point });
 
+=======
+  #offers = null;
+  #destinations = null;
+  constructor({ point, offers, destinations, onFormSubmit, onFormHide, onDeleteClick }) {
+    super();
+    this._setState({ ...point });
+    this.#offers = offers;
+    this.#destinations = destinations;
+>>>>>>> Stashed changes
     this.#handleFormSubmit = onFormSubmit;
     this.#handleDeleteClick = onDeleteClick;
     this.#handleHideForm = onFormHide;
 
     this._restoreHandlers();
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
   }
 
@@ -189,14 +244,75 @@ export default class EditingFormView extends AbstractStatefulView {
     });
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
     this.#setDatepickers();
+=======
   }
 
-  #formSubmitHandler = (evt) => {
+  get template() {
+    return createEditingFormTemplate(this._state, this.#offers, this.#destinations);
+>>>>>>> Stashed changes
+  }
+
+  get destinations() {
+    return this.#destinations;
+  }
+
+  get offers() {
+    return this.#offers;
+  }
+
+  parseStateTo(state) {
+    return {...state};
+  }
+
+  removeElement() {
+    super.removeElement();
+
+
+    if (this.#datepickerStart) {
+      this.#datepickerStart.destroy();
+      this.#datepickerStart = null;
+    }
+    if (this.#datepickerEnd) {
+      this.#datepickerEnd.destroy();
+      this.#datepickerEnd = null;
+    }
+  }
+
+  reset(point) {
+    this.updateElement(point);
+  }
+
+  _restoreHandlers() {
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#resetButtonClick);
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+    this.element.querySelectorAll('.event__type-input').forEach((input) => {
+      input.addEventListener('click', this.#typeChangeHandler);
+    });
+
+    this.element.querySelectorAll('.event__input--destination').forEach((input) => {
+      input.addEventListener('change', this.#destinationChangeHandler);
+    });
+    this.element.querySelectorAll('.event__offer-checkbox').forEach((input) => {
+      input.addEventListener('click', this.#offersChangeHandler);
+    });
+    this.element.querySelectorAll('.event__input--price').forEach((input) => {
+      input.addEventListener('change', this.#priceChangeHandler);
+    });
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
+    this.#setDatepickers();
+  }
+
+  #formSubmitHandler = async (evt) => {
     evt.preventDefault();
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     this.#handleFormSubmit(this.#point);
 =======
     this.#handleFormSubmit(this._state.point);
+>>>>>>> Stashed changes
+=======
+    const updatedPoint = this.parseStateTo(this._state);
+    this.#handleFormSubmit(updatedPoint);
 >>>>>>> Stashed changes
   };
 
@@ -222,7 +338,11 @@ export default class EditingFormView extends AbstractStatefulView {
     evt.preventDefault();
     const cityName = evt.target.value;
 
+<<<<<<< Updated upstream
     const destination = getDestinationByCityName(cityName);
+=======
+    const destination = this.destinations.find((dest) => dest.name === cityName);
+>>>>>>> Stashed changes
     if (destination) {
       this.updateElement({
         destinationID: destination.id
@@ -261,9 +381,13 @@ export default class EditingFormView extends AbstractStatefulView {
 
   #closeDateEndHandler = ([date]) => {
     this.updateElement({
+<<<<<<< Updated upstream
 
       endDate: date,
 
+=======
+      endDate: date,
+>>>>>>> Stashed changes
     });
   };
 
@@ -284,7 +408,11 @@ export default class EditingFormView extends AbstractStatefulView {
     });
   };
 
+<<<<<<< Updated upstream
   #formDeleteClickHandler = (evt) =>{
+=======
+  #formDeleteClickHandler = (evt) => {
+>>>>>>> Stashed changes
     evt.preventDefault();
     this.#handleDeleteClick(this._state);
   };
