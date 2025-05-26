@@ -1,5 +1,6 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { mockDestinations } from '../mock/destination';
 import { mockOffers } from '../mock/offers';
 
@@ -23,6 +24,8 @@ export { getOffersByType, getDestinationById, getDestinationByCityName, setSaveB
 =======
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 // import { mockDestinations } from '../mock/destination';
 // import { mockOffers } from '../mock/offers';
 //
@@ -44,6 +47,9 @@ export { getOffersByType, getDestinationById, getDestinationByCityName, setSaveB
 // };
 // export { getOffersByType, getDestinationById, getDestinationByCityName, setSaveButtonDisabled };
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

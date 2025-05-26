@@ -73,6 +73,10 @@ const UpdateType = {
   MAJOR:'MAJOR',
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+  INIT: 'INIT',
+>>>>>>> Stashed changes
 =======
   INIT: 'INIT',
 >>>>>>> Stashed changes
@@ -88,12 +92,24 @@ const FilterType = {
 };
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 
 
 >>>>>>> Stashed changes
 =======
 
+
+>>>>>>> Stashed changes
+=======
+
+export const SortType = {
+  DAY: 'day',
+  EVENT: 'event',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFER: 'offer'
+};
 
 >>>>>>> Stashed changes
 export { PRICE, CITIES, HOUR, MINUTES, POINT_TYPES, FLATPICKR_CONFIG,UserAction,UpdateType,FilterType};
