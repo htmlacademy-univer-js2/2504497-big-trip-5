@@ -22,6 +22,10 @@ function createWaypointTemplate(point, offersArr, destinations) {
     `)
     .join('');
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 =======
 
 >>>>>>> Stashed changes
@@ -70,7 +74,11 @@ export default class StartingPointView extends AbstractView {
   #handleFavouriteToggle = null;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   constructor({ point, onButtonClick, onFavoriteClick }) {
+=======
+  constructor({ point, offers, destinations, onButtonClick, onFavoriteClick }) {
+>>>>>>> Stashed changes
 =======
   constructor({ point, offers, destinations, onButtonClick, onFavoriteClick }) {
 >>>>>>> Stashed changes

@@ -20,7 +20,11 @@ export default class NoPointView extends AbstractView {
   #filterType = null;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   constructor({filterType}) {
+=======
+  constructor({ filterType }) {
+>>>>>>> Stashed changes
 =======
   constructor({ filterType }) {
 >>>>>>> Stashed changes

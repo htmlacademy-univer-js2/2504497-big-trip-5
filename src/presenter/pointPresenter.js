@@ -2,8 +2,12 @@ import { render, replace, remove } from '../framework/render';
 import StartingPointView from '../view/startingPoint';
 import EditingFormView from '../view/formEdit';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { UserAction,UpdateType } from '../mock/const';
 // import { isDatesEqual } from '../utils/date';
+=======
+import { UserAction, UpdateType } from '../mock/const';
+>>>>>>> Stashed changes
 =======
 import { UserAction, UpdateType } from '../mock/const';
 >>>>>>> Stashed changes
@@ -21,11 +25,14 @@ export default class PointPresenter {
   #pointEditComponent = null;
   #mode = Mode.DEFAULT;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   #offers = null;
   #point = null;
   constructor({ listComponent, onDataChange, onModeChange, offers }) {
     this.#offers = offers;
 =======
+=======
+>>>>>>> Stashed changes
   #isPointSaving = true;
   #isEventEditing = false;
   #isOtherFormOpen = false;
@@ -34,6 +41,9 @@ export default class PointPresenter {
   #destinations = null;
   constructor({ listComponent, onDataChange, onModeChange }) {
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     this.#listComponent = listComponent;
     this.#handleDataChange = onDataChange;
@@ -41,19 +51,26 @@ export default class PointPresenter {
   }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   init(point) {
     this.#point = point;
 =======
+=======
+>>>>>>> Stashed changes
   init(point, destinations, offers) {
     this.#point = point;
     this.#offers = offers;
     this.#destinations = destinations;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
     const prevPointComponent = this.#pointComponent;
     const prevPointEditComponent = this.#pointEditComponent;
     this.#pointComponent = new StartingPointView({
       point: this.#point,
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
       onButtonClick: this.#handleEditClick,
       onFavoriteClick: this.#handleFavoriteClick,
@@ -64,6 +81,8 @@ export default class PointPresenter {
       offers: this.#offers,
       onFormSubmit: this.#handleFormSubmit,
 =======
+=======
+>>>>>>> Stashed changes
       destinations: this.#destinations,
       offers: this.#offers,
       onButtonClick: this.#handleEditClick,
@@ -74,12 +93,19 @@ export default class PointPresenter {
       destinations: this.#destinations,
       offers: this.#offers,
       onFormSubmit: async () => this.#replaceFormToCard(),
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
       onFormHide: this.#handleHideForm,
       onDeleteClick: this.#handleDeleteClick,
     });
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 =======
 
 >>>>>>> Stashed changes
@@ -108,6 +134,10 @@ export default class PointPresenter {
     if (this.#mode !== Mode.DEFAULT) {
       this.#pointEditComponent.reset(this.#point);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+      this.#isOtherFormOpen = true;
+>>>>>>> Stashed changes
 =======
       this.#isOtherFormOpen = true;
 >>>>>>> Stashed changes
@@ -116,6 +146,7 @@ export default class PointPresenter {
   }
 
   #replaceCardToForm() {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     replace(this.#pointEditComponent, this.#pointComponent);
     document.addEventListener('keydown', this.#escKeyDownHandler);
@@ -130,6 +161,8 @@ export default class PointPresenter {
     this.#handleDataChange(UserAction.UPDATE_POINT,UpdateType.PATCH,updatedPoint);
     replace(this.#pointComponent, this.#pointEditComponent);
 =======
+=======
+>>>>>>> Stashed changes
 
     document.addEventListener('keydown', this.#escKeyDownHandler);
     this.#handleModeChange();
@@ -162,6 +195,9 @@ export default class PointPresenter {
     // this.#handleDataChange(UserAction.UPDATE_POINT, UpdateType.PATCH, updatedPoint);
     replace(this.#pointComponent, this.#pointEditComponent);
     this.#isEventEditing = false;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     document.removeEventListener('keydown', this.#escKeyDownHandler);
     this.#mode = Mode.DEFAULT;
@@ -177,7 +213,11 @@ export default class PointPresenter {
 
   #handleFavoriteClick = () => {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     this.#handleDataChange(UserAction.UPDATE_TASK,UpdateType.MINOR,{ ...this.#point, isFavorite: !this.#point.isFavorite });
+=======
+    this.#handleDataChange(UserAction.UPDATE_POINT, UpdateType.PATCH, { ...this.#point, isFavorite: !this.#point.isFavorite });
+>>>>>>> Stashed changes
 =======
     this.#handleDataChange(UserAction.UPDATE_POINT, UpdateType.PATCH, { ...this.#point, isFavorite: !this.#point.isFavorite });
 >>>>>>> Stashed changes
@@ -189,7 +229,11 @@ export default class PointPresenter {
 
   #handleFormSubmit = (update) => {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     this.#handleDataChange(UserAction.UPDATE_TASK, UpdateType.PATCH,
+=======
+    this.#handleDataChange(UserAction.UPDATE_POINT, UpdateType.PATCH,
+>>>>>>> Stashed changes
 =======
     this.#handleDataChange(UserAction.UPDATE_POINT, UpdateType.PATCH,
 >>>>>>> Stashed changes
@@ -202,6 +246,7 @@ export default class PointPresenter {
   };
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   #handleDeleteClick = (point)=> {
 =======
   #handleDeleteClick = (point) => {
@@ -212,6 +257,14 @@ export default class PointPresenter {
   };
 <<<<<<< Updated upstream
 =======
+
+
+>>>>>>> Stashed changes
+=======
+  #handleDeleteClick = async (point) => {
+    await this.#handleDataChange(UserAction.DELETE_POINT, UpdateType.MINOR, point);
+    this.destroy();
+  };
 
 
 >>>>>>> Stashed changes
