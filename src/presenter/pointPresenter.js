@@ -1,142 +1,89 @@
-import { render, replace, remove } from '../framework/render';
-import StartingPointView from '../view/startingPoint';
-import EditingFormView from '../view/formEdit';
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-import { UserAction,UpdateType } from '../mock/const';
-// import { isDatesEqual } from '../utils/date';
-=======
-import { UserAction, UpdateType } from '../mock/const';
->>>>>>> Stashed changes
-=======
-import { UserAction, UpdateType } from '../mock/const';
->>>>>>> Stashed changes
-=======
-import { UserAction, UpdateType } from '../mock/const';
->>>>>>> Stashed changes
+import EventView from '../view/point.js';
+import EventEditorView from '../view/pointEditor.js';
+import { render, replace, remove } from '../framework/render.js';
+import { isEscapeKey } from '../utils.js';
+import { UpdateType, UserAction } from '../const.js';
 
+/**
+ * @enum {string}
+ */
 const Mode = {
   DEFAULT: 'DEFAULT',
-  EDITING: 'EDITING',
+  EDITING: 'EDITING'
 };
 
-export default class PointPresenter {
-  #listComponent = null;
-  #handleDataChange = null;
-  #handleModeChange = null;
+/**
+ * Presenter class for managing point events in the application
+ */
+class PointPresenter {
+  /** @type {EventView|null} */
   #pointComponent = null;
+  /** @type {EventEditorView|null} */
   #pointEditComponent = null;
+  /** @type {EventEditorView|null} */
+  #newPointFormComponent = null;
+  /** @type {Object|null} */
+  #point = null;
+  /** @type {HTMLElement} */
+  #pointsContainer = null;
+  /** @type {Array} */
+  #offers = [];
+  /** @type {Array} */
+  #destinations = [];
+  /** @type {Function} */
+  #handleDataChange = null;
+  /** @type {Function} */
+  #handleModeChange = null;
+  /** @type {string} */
   #mode = Mode.DEFAULT;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  #offers = null;
-  #point = null;
-  constructor({ listComponent, onDataChange, onModeChange, offers }) {
-    this.#offers = offers;
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-  #isPointSaving = true;
-  #isEventEditing = false;
-  #isOtherFormOpen = false;
-  #offers = null;
-  #point = null;
-  #destinations = null;
-  constructor({ listComponent, onDataChange, onModeChange }) {
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-    this.#listComponent = listComponent;
-    this.#handleDataChange = onDataChange;
-    this.#handleModeChange = onModeChange;
-  }
-
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  init(point) {
-    this.#point = point;
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-  init(point, destinations, offers) {
-    this.#point = point;
+  /**
+   * @param {Object} params - Constructor parameters
+   * @param {HTMLElement} params.pointsContainer - Container for points
+   * @param {Array} params.offers - Available offers
+   * @param {Array} params.destinations - Available destinations
+   * @param {Function} params.onDataChange - Callback for data changes
+   * @param {Function} params.onModeChange - Callback for mode changes
+   * @param {EventEditorView} params.newPointFormComponent - Component for new point form
+   */
+  constructor({pointsContainer, offers, destinations, onDataChange, onModeChange, newPointFormComponent}) {
+    this.#pointsContainer = pointsContainer;
     this.#offers = offers;
     this.#destinations = destinations;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+    this.#handleDataChange = onDataChange;
+    this.#handleModeChange = onModeChange;
+    this.#newPointFormComponent = newPointFormComponent;
+  }
+
+  /**
+   * Initializes the point presenter with a new point
+   * @param {Object} point - Point data to initialize with
+   */
+  init(point) {
+    this.#point = point;
 
     const prevPointComponent = this.#pointComponent;
     const prevPointEditComponent = this.#pointEditComponent;
-    this.#pointComponent = new StartingPointView({
-      point: this.#point,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-      onButtonClick: this.#handleEditClick,
-      onFavoriteClick: this.#handleFavoriteClick,
-    });
 
-    this.#pointEditComponent = new EditingFormView({
+    this.#pointComponent = new EventView({
       point: this.#point,
       offers: this.#offers,
-      onFormSubmit: this.#handleFormSubmit,
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
       destinations: this.#destinations,
-      offers: this.#offers,
-      onButtonClick: this.#handleEditClick,
-      onFavoriteClick: this.#handleFavoriteClick,
+      onEditBtnClick: this.#editBtnClickHandler,
+      onFavoriteClick: this.#favoriteBtnClickHandler,
     });
-    this.#pointEditComponent = new EditingFormView({
+
+    this.#pointEditComponent = new EventEditorView({
       point: this.#point,
-      destinations: this.#destinations,
       offers: this.#offers,
-      onFormSubmit: async () => this.#replaceFormToCard(),
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-      onFormHide: this.#handleHideForm,
-      onDeleteClick: this.#handleDeleteClick,
+      destinations: this.#destinations,
+      onFormSubmit: this.#editFormSubmitHandler,
+      onFormReset: this.#editFormResetHandler,
+      onDeleteClick: this.#deletePointHandler
     });
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
-=======
-
->>>>>>> Stashed changes
-=======
-
->>>>>>> Stashed changes
     if (prevPointComponent === null || prevPointEditComponent === null) {
-      render(this.#pointComponent, this.#listComponent);
+      render(this.#pointComponent, this.#pointsContainer);
       return;
     }
 
@@ -145,177 +92,158 @@ export default class PointPresenter {
     }
 
     if (this.#mode === Mode.EDITING) {
-      replace(this.#pointEditComponent, prevPointEditComponent);
+      replace(this.#pointComponent, prevPointEditComponent);
+      this.#mode = Mode.DEFAULT;
     }
+
     remove(prevPointComponent);
     remove(prevPointEditComponent);
   }
 
+  /**
+   * Resets the form view to default state
+   */
+  resetFormView() {
+    if (this.#mode !== Mode.DEFAULT) {
+      this.#pointEditComponent.reset(this.#point);
+      this.#replaceEditFormToPoint();
+    }
+  }
+
+  /**
+   * Destroys the presenter and removes all components
+   */
   destroy() {
     remove(this.#pointComponent);
     remove(this.#pointEditComponent);
   }
 
-  resetView() {
-    if (this.#mode !== Mode.DEFAULT) {
-      this.#pointEditComponent.reset(this.#point);
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-      this.#isOtherFormOpen = true;
->>>>>>> Stashed changes
-=======
-      this.#isOtherFormOpen = true;
->>>>>>> Stashed changes
-=======
-      this.#isOtherFormOpen = true;
->>>>>>> Stashed changes
-      this.#replaceFormToCard();
+  /**
+   * Sets the saving state for the edit form
+   */
+  setSaving() {
+    if (this.#mode === Mode.EDITING) {
+      this.#pointEditComponent.updateElement({
+        isSaving: true
+      });
     }
   }
 
-  #replaceCardToForm() {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+  /**
+   * Sets the deleting state for the edit form
+   */
+  setDeleting() {
+    if (this.#mode === Mode.EDITING) {
+      this.#pointEditComponent.updateElement({
+        isDeleting: true
+      });
+    }
+  }
+
+  /**
+   * Handles aborting operations with visual feedback
+   */
+  setAborting() {
+    if (this.#mode === Mode.DEFAULT) {
+      this.#pointComponent.shake();
+      return;
+    }
+    const resetFormState = () => {
+      this.#pointEditComponent.updateElement({
+        isSaving: false,
+        isDeleting: false
+      });
+    };
+
+    this.#pointEditComponent.shake(resetFormState);
+  }
+
+  /**
+   * Replaces point view with edit form
+   * @private
+   */
+  #replacePointToEditForm() {
     replace(this.#pointEditComponent, this.#pointComponent);
-    document.addEventListener('keydown', this.#escKeyDownHandler);
+    document.addEventListener('keydown', this.#escapeKeydownHandler);
     this.#handleModeChange();
     this.#mode = Mode.EDITING;
-
   }
 
-  #replaceFormToCard() {
-    const updatedPoint = this.#pointEditComponent._state;
-    this.#point = updatedPoint;
-    this.#handleDataChange(UserAction.UPDATE_POINT,UpdateType.PATCH,updatedPoint);
+  /**
+   * Replaces edit form with point view
+   * @private
+   */
+  #replaceEditFormToPoint() {
     replace(this.#pointComponent, this.#pointEditComponent);
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-
-    document.addEventListener('keydown', this.#escKeyDownHandler);
-    this.#handleModeChange();
-    this.#handleModeChange().then(() => {
-      replace(this.#pointEditComponent, this.#pointComponent);
-    });
-
-    this.#mode = Mode.EDITING;
-    this.#isEventEditing = true;
-  }
-
-  async #replaceFormToCard() {
-    const updatedPoint = this.#pointEditComponent.parseStateTo(this.#pointEditComponent._state);
-    const updatedDestination = this.#pointEditComponent.destinations;
-    const updatedOffers = this.#pointEditComponent.offers;
-    this.#point = updatedPoint;
-    if (!this.#isOtherFormOpen && this.#isPointSaving) {
-      await this.#handleDataChange(
-        UserAction.UPDATE_POINT,
-        UpdateType.PATCH,
-        updatedPoint,
-        updatedDestination,
-        updatedOffers
-      );
-    }
-
-    this.#isPointSaving = true;
-    this.#isOtherFormOpen = false;
-
-    // this.#handleDataChange(UserAction.UPDATE_POINT, UpdateType.PATCH, updatedPoint);
-    replace(this.#pointComponent, this.#pointEditComponent);
-    this.#isEventEditing = false;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
+    document.removeEventListener('keydown', this.#escapeKeydownHandler);
     this.#mode = Mode.DEFAULT;
   }
 
-  #escKeyDownHandler = (evt) => {
-    if (evt.key === 'Escape') {
+  /**
+   * Handles escape key press
+   * @param {KeyboardEvent} evt - Keyboard event
+   * @private
+   */
+  #escapeKeydownHandler = (evt) => {
+    if (isEscapeKey(evt)) {
       evt.preventDefault();
       this.#pointEditComponent.reset(this.#point);
-      this.#replaceFormToCard();
+      this.#replaceEditFormToPoint();
+      document.removeEventListener('keydown', this.#escapeKeydownHandler);
     }
   };
 
-  #handleFavoriteClick = () => {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    this.#handleDataChange(UserAction.UPDATE_TASK,UpdateType.MINOR,{ ...this.#point, isFavorite: !this.#point.isFavorite });
-=======
-    this.#handleDataChange(UserAction.UPDATE_POINT, UpdateType.PATCH, { ...this.#point, isFavorite: !this.#point.isFavorite });
->>>>>>> Stashed changes
-=======
-    this.#handleDataChange(UserAction.UPDATE_POINT, UpdateType.PATCH, { ...this.#point, isFavorite: !this.#point.isFavorite });
->>>>>>> Stashed changes
-=======
-    this.#handleDataChange(UserAction.UPDATE_POINT, UpdateType.PATCH, { ...this.#point, isFavorite: !this.#point.isFavorite });
->>>>>>> Stashed changes
+  /**
+   * Handles favorite button click
+   * @private
+   */
+  #favoriteBtnClickHandler = () => {
+    this.#handleDataChange(
+      UserAction.UPDATE_EVENT,
+      UpdateType.PATCH,
+      {...this.#point, isFavorite: !this.#point.isFavorite}
+    );
   };
 
-  #handleEditClick = () => {
-    this.#replaceCardToForm();
-  };
-
-  #handleFormSubmit = (update) => {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    this.#handleDataChange(UserAction.UPDATE_TASK, UpdateType.PATCH,
-=======
-    this.#handleDataChange(UserAction.UPDATE_POINT, UpdateType.PATCH,
->>>>>>> Stashed changes
-=======
-    this.#handleDataChange(UserAction.UPDATE_POINT, UpdateType.PATCH,
->>>>>>> Stashed changes
-=======
-    this.#handleDataChange(UserAction.UPDATE_POINT, UpdateType.PATCH,
->>>>>>> Stashed changes
-      update,);
-    this.#replaceFormToCard();
-  };
-
-  #handleHideForm = () => {
-    this.#replaceFormToCard();
-  };
-
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  #handleDeleteClick = (point)=> {
-=======
-  #handleDeleteClick = (point) => {
->>>>>>> Stashed changes
-    this.#handleDataChange(UserAction.DELETE_POINT,
-      UpdateType.MINOR,
-      point,);
-  };
-<<<<<<< Updated upstream
-=======
-
-
->>>>>>> Stashed changes
-=======
-=======
->>>>>>> Stashed changes
-  #handleDeleteClick = async (point) => {
-    await this.#handleDataChange(UserAction.DELETE_POINT, UpdateType.MINOR, point);
-    this.destroy();
+  /**
+   * Handles edit button click
+   * @private
+   */
+  #editBtnClickHandler = () => {
+    this.#replacePointToEditForm();
+    if (this.#newPointFormComponent) {
+      this.#newPointFormComponent.destroy();
+    }
   };
 
 
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+  /**
+   * Handles point deletion
+   * @param {Object} point - Point to delete
+   * @private
+   */
+  #deletePointHandler = (point) => {
+    this.#handleDataChange(UserAction.DELETE_EVENT, UpdateType.MINOR, point);
+  };
+
+  /**
+   * Handles edit form reset
+   * @private
+   */
+  #editFormResetHandler = () => {
+    this.#pointEditComponent.reset(this.#point);
+    this.#replaceEditFormToPoint();
+    document.removeEventListener('keydown', this.#escapeKeydownHandler);
+  };
+
+  /**
+   * Handles edit form submission
+   * @param {Object} point - Updated point data
+   * @private
+   */
+  #editFormSubmitHandler = (point) => {
+    this.#handleDataChange(UserAction.UPDATE_EVENT, UpdateType.MINOR, point);
+  };
 }
+
+export default PointPresenter;
