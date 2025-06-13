@@ -1,45 +1,25 @@
-import Observable from '../framework/observable.js';
+import Observable from '../framework/observable';
+import { UpdateType } from '../mock/const';
 
-/**
- * Model class for managing offers data
- * @extends Observable
- */
-class OffersModel extends Observable {
-  /** @type {import('../services/events-api-service').default} */
-  #eventsApiService;
-
-  /** @type {Array<import('../types/offer').default>} */
+export default class OffersModel extends Observable {
   #offers = [];
+  #offersApiService = null;
 
-  /**
-   * Creates an instance of OffersModel
-   * @param {Object} params - Constructor parameters
-   * @param {import('../services/events-api-service').default} params.eventsApiService - Service for API calls
-   */
-  constructor({eventsApiService}) {
+  constructor({ offersApiService }) {
     super();
-    this.#eventsApiService = eventsApiService;
+    this.#offersApiService = offersApiService;
   }
 
-  /**
-   * Getter for offers array
-   * @returns {Array<import('../types/offer').default>} Array of offers
-   */
   get offers() {
     return this.#offers;
   }
 
-  /**
-   * Initializes the model by fetching offers from the API
-   * @returns {Promise<void>}
-   */
   async init() {
     try {
-      this.#offers = await this.#eventsApiService.offers;
+      this.#offers = await this.#offersApiService.offers;
     } catch (err) {
-      return err;
+      this.#offers = [];
     }
+    this._notify(UpdateType.INIT);
   }
 }
-
-export default OffersModel;

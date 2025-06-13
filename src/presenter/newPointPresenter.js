@@ -1,105 +1,91 @@
-import { UpdateType, UserAction } from '../const';
-import { RenderPosition, remove, render } from '../framework/render';
-import AddPointView from '../view/pointCreator';
+import { remove, render, RenderPosition } from '../framework/render.js';
+import EditingFormView from '../view/formEdit';
+import { nanoid } from 'nanoid';
+import { UserAction, UpdateType } from '../mock/const.js';
 
-/**
- * Presenter class for handling new point creation functionality
- */
-class NewPointPresenter {
-  /** @type {HTMLElement} */
-  #container;
+export default class NewPointPresenter {
+  #listComponent = null;
+  #handleDataChange = null;
+  #handleDestroy = null;
+  #offers = null;
+  #destinations = null;
+  #point = null;
+  #pointEditComponent = null;
 
-  /** @type {Array} */
-  #offers;
+  constructor({ listComponent, onDataChange, onDestroy }) {
+    this.#listComponent = listComponent;
+    this.#handleDataChange = onDataChange;
+    this.#handleDestroy = onDestroy;
 
-  /** @type {Array} */
-  #destinations;
-
-  /** @type {Function} */
-  #onDataChange;
-
-  /** @type {Function} */
-  #onResetForm;
-
-  /** @type {AddPointView} */
-  #addPointFormComponent;
-
-  /**
-   * Creates an instance of NewPointPresenter
-   * @param {Object} params - Constructor parameters
-   * @param {HTMLElement} params.container - Container element for rendering
-   * @param {Array} params.offers - Available offers
-   * @param {Array} params.destinations - Available destinations
-   * @param {Function} params.onDataChange - Callback for data changes
-   * @param {Function} params.onResetForm - Callback for form reset
-   */
-  constructor({ container, offers, destinations, onDataChange, onResetForm }) {
-    this.#container = container;
-    this.#offers = offers;
-    this.#destinations = destinations;
-    this.#onDataChange = onDataChange;
-    this.#onResetForm = onResetForm;
   }
 
-  /**
-   * Initializes the presenter and renders the add point form
-   */
-  init() {
-    this.#addPointFormComponent = new AddPointView({
+  init(point, offers, destinations) {
+    if (this.#pointEditComponent !== null) {
+      return;
+    }
+    this.#point = point;
+    this.#offers = offers;
+    this.#destinations = destinations;
+
+    this.#pointEditComponent = new EditingFormView({
+      point: this.#point,
       offers: this.#offers,
       destinations: this.#destinations,
       onFormSubmit: this.#handleFormSubmit,
-      onFormReset: this.#closeAddPointForm,
+      onDeleteClick: this.#handleDeleteClick,
+      onCloseClick: this.#resetButtonClick,
     });
-    render(this.#addPointFormComponent, this.#container, RenderPosition.AFTERBEGIN);
+
+    render(this.#pointEditComponent, this.#listComponent, RenderPosition.AFTERBEGIN);
+
+    document.addEventListener('keydown', this.#escKeyDownHandler);
   }
 
-  /**
-   * Destroys the presenter and cleans up resources
-   */
   destroy() {
-    this.#closeAddPointForm();
+    if (this.#pointEditComponent === null) {
+      return;
+    }
+
+    this.#handleDestroy();
+
+    remove(this.#pointEditComponent);
+    this.#pointEditComponent = null;
+
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
   }
 
-  /**
-   * Sets the saving state of the form
-   */
-  setSaving() {
-    this.#addPointFormComponent.updateElement({
-      isSaving: true
-    });
-  }
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+  #handleFormSubmit = (point) => {
 
-  /**
-   * Sets the aborting state of the form and handles error animation
-   */
-  setAborting() {
-    const resetFormState = () => {
-      this.#addPointFormComponent.updateElement({
-        isSaving: false
-      });
-    };
-
-    this.#addPointFormComponent.shake(resetFormState);
-  }
-
-  /**
-   * Closes the add point form and triggers reset callback
-   * @private
-   */
-  #closeAddPointForm = () => {
-    remove(this.#addPointFormComponent);
-    this.#onResetForm();
+    this.#handleDataChange(
+=======
+  #handleFormSubmit = async (point) => {
+    await this.#handleDataChange(
+>>>>>>> Stashed changes
+=======
+  #handleFormSubmit = async (point) => {
+    await this.#handleDataChange(
+>>>>>>> Stashed changes
+      UserAction.ADD_POINT,
+      UpdateType.MINOR,
+      { ...point, id: nanoid() },
+    );
+    this.destroy();
   };
 
-  /**
-   * Handles form submission
-   * @param {Object} point - Point data to be added
-   * @private
-   */
-  #handleFormSubmit = (point) => {
-    this.#onDataChange(UserAction.ADD_EVENT, UpdateType.MAJOR, point);
+  #handleDeleteClick = () => {
+    this.destroy();
+  };
+
+  #escKeyDownHandler = (evt) => {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      evt.preventDefault();
+      this.destroy();
+    }
+  };
+
+  #resetButtonClick = () => {
+    this.destroy();
   };
 }
-
-export default NewPointPresenter;

@@ -1,20 +1,99 @@
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { humanizeEditingFormDate } from '../utils/date.js';
-import { getDestinationById, getOffersByType } from '../utils/mock.js';
-import AbstractView from '../framework/view/abstract-view.js';
+import { getDestinationById, getOffersByType, getDestinationByCityName, setSaveButtonDisabled } from '../utils/mock.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
+import { POINT_TYPES,FLATPICKR_CONFIG } from '../mock/const.js';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
 
 function createEditingFormTemplate(point) {
   const { type, price, startDate, endDate } = point;
+
+=======
+import {humanizeEditingFormDate} from '../utils/date.js';
+import {setSaveButtonDisabled} from '../utils/mock.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
+import {FLATPICKR_CONFIG, POINT_TYPES} from '../mock/const.js';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
+
+function createEditingFormTemplate(point, offersArr, destinations) {
+  const { type, price, startDate, endDate, destinationID, } = point;
+
+>>>>>>> Stashed changes
   const dateStart = humanizeEditingFormDate(startDate);
   const dateEnd = humanizeEditingFormDate(endDate);
-  const destination = getDestinationById(point);
+  const offers = offersArr ? offersArr.find((offer) => offer.type === point.type).offers : {};
 
+  const destination = destinations.find((dest) => dest.id === destinationID) || {};
+  const destinationName = destination.name || '';
+  const destinationsDescription = destination.description || '';
+  const destinationsListTemplate = destinations
+    .map((dest) => `<option value="${dest.name}"></option>`).join('');
+
+
+<<<<<<< Updated upstream
   const offers = getOffersByType(point);
+
+=======
+>>>>>>> Stashed changes
+=======
+import {humanizeEditingFormDate} from '../utils/date.js';
+import {setSaveButtonDisabled} from '../utils/mock.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
+import {FLATPICKR_CONFIG, POINT_TYPES} from '../mock/const.js';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
+
+function createEditingFormTemplate(point, offersArr, destinations) {
+  const { type, price, startDate, endDate, destinationID, } = point;
+
+  const dateStart = humanizeEditingFormDate(startDate);
+  const dateEnd = humanizeEditingFormDate(endDate);
+  const offers = offersArr ? offersArr.find((offer) => offer.type === point.type).offers : {};
+
+  const destination = destinations.find((dest) => dest.id === destinationID) || {};
+  const destinationName = destination.name || '';
+  const destinationsDescription = destination.description || '';
+  const destinationsListTemplate = destinations
+    .map((dest) => `<option value="${dest.name}"></option>`).join('');
+
+
+>>>>>>> Stashed changes
+=======
+import {humanizeEditingFormDate} from '../utils/date.js';
+import {setSaveButtonDisabled} from '../utils/mock.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
+import {FLATPICKR_CONFIG, POINT_TYPES} from '../mock/const.js';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
+
+function createEditingFormTemplate(point, offersArr, destinations) {
+  const { type, price, startDate, endDate, destinationID, } = point;
+
+  const dateStart = humanizeEditingFormDate(startDate);
+  const dateEnd = humanizeEditingFormDate(endDate);
+  const offers = offersArr ? offersArr.find((offer) => offer.type === point.type).offers : {};
+
+  const destination = destinations.find((dest) => dest.id === destinationID) || {};
+  const destinationName = destination.name || '';
+  const destinationsDescription = destination.description || '';
+  const destinationsListTemplate = destinations
+    .map((dest) => `<option value="${dest.name}"></option>`).join('');
+
+
+>>>>>>> Stashed changes
   const offersTemplate = offers
     .map((offer) => {
       const checked = point.offers.includes(offer.id) ? 'checked' : '';
       return `<div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-1" type="checkbox" name="event-offer-comfort" ${checked}>
-        <label class="event__offer-label" for="event-offer-comfort-1">
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+        <input class="event__offer-checkbox  visually-hidden" id="${offer.id}" type="checkbox" name="event-offer-comfort" ${checked}>
+        <label class="event__offer-label" for="${offer.id}">
         <span class="event__offer-title">${offer.title}</span>
         &plus;&euro;&nbsp;
         <span class="event__offer-price">${offer.price}</span>
@@ -22,6 +101,48 @@ function createEditingFormTemplate(point) {
       </div>`;
     })
     .join('');
+=======
+      <input class="event__offer-checkbox  visually-hidden" id="${offer.id}" type="checkbox" name="event-offer-comfort" ${checked}>
+      <label class="event__offer-label" for="${offer.id}">
+      <span class="event__offer-title">${offer.title}</span>
+      &plus;&euro;&nbsp;
+      <span class="event__offer-price">${offer.price}</span>
+      </label>
+    </div>`;
+    })
+    .join('');
+
+>>>>>>> Stashed changes
+=======
+      <input class="event__offer-checkbox  visually-hidden" id="${offer.id}" type="checkbox" name="event-offer-comfort" ${checked}>
+      <label class="event__offer-label" for="${offer.id}">
+      <span class="event__offer-title">${offer.title}</span>
+      &plus;&euro;&nbsp;
+      <span class="event__offer-price">${offer.price}</span>
+      </label>
+    </div>`;
+    })
+    .join('');
+
+>>>>>>> Stashed changes
+=======
+      <input class="event__offer-checkbox  visually-hidden" id="${offer.id}" type="checkbox" name="event-offer-comfort" ${checked}>
+      <label class="event__offer-label" for="${offer.id}">
+      <span class="event__offer-title">${offer.title}</span>
+      &plus;&euro;&nbsp;
+      <span class="event__offer-price">${offer.price}</span>
+      </label>
+    </div>`;
+    })
+    .join('');
+
+>>>>>>> Stashed changes
+  const pointTypeTemplate = POINT_TYPES.map((pointType) => `
+   <div class="event__type-item">
+                          <input id="event-type-${pointType}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${pointType}">
+                          <label class="event__type-label  event__type-label--${pointType}" for="event-type-${pointType}-1">${pointType}</label>
+                        </div>
+  `).join('');
   return `
  <li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
@@ -36,64 +157,40 @@ function createEditingFormTemplate(point) {
                     <div class="event__type-list">
                       <fieldset class="event__type-group">
                         <legend class="visually-hidden">Event type</legend>
-
-                        <div class="event__type-item">
-                          <input id="event-type-taxi-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="taxi">
-                          <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-1">Taxi</label>
-                        </div>
-
-                        <div class="event__type-item">
-                          <input id="event-type-bus-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="bus">
-                          <label class="event__type-label  event__type-label--bus" for="event-type-bus-1">Bus</label>
-                        </div>
-
-                        <div class="event__type-item">
-                          <input id="event-type-train-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="train">
-                          <label class="event__type-label  event__type-label--train" for="event-type-train-1">Train</label>
-                        </div>
-
-                        <div class="event__type-item">
-                          <input id="event-type-ship-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="ship">
-                          <label class="event__type-label  event__type-label--ship" for="event-type-ship-1">Ship</label>
-                        </div>
-
-                        <div class="event__type-item">
-                          <input id="event-type-drive-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="drive">
-                          <label class="event__type-label  event__type-label--drive" for="event-type-drive-1">Drive</label>
-                        </div>
-
-                        <div class="event__type-item">
-                          <input id="event-type-flight-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="flight" checked>
-                          <label class="event__type-label  event__type-label--flight" for="event-type-flight-1">Flight</label>
-                        </div>
-
-                        <div class="event__type-item">
-                          <input id="event-type-check-in-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="check-in">
-                          <label class="event__type-label  event__type-label--check-in" for="event-type-check-in-1">Check-in</label>
-                        </div>
-
-                        <div class="event__type-item">
-                          <input id="event-type-sightseeing-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="sightseeing">
-                          <label class="event__type-label  event__type-label--sightseeing" for="event-type-sightseeing-1">Sightseeing</label>
-                        </div>
-
-                        <div class="event__type-item">
-                          <input id="event-type-restaurant-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="restaurant">
-                          <label class="event__type-label  event__type-label--restaurant" for="event-type-restaurant-1">Restaurant</label>
-                        </div>
+                      ${pointTypeTemplate}
                       </fieldset>
                     </div>
                   </div>
 
                   <div class="event__field-group  event__field-group--destination">
                     <label class="event__label  event__type-output" for="event-destination-1">
-                    ${type}
+                    ${type} ${destinationName}
                     </label>
-                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination.cityName}" list="destination-list-1">
+                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destinationName}" list="destination-list-1">
                     <datalist id="destination-list-1">
-                      <option value="Amsterdam"></option>
-                      <option value="Geneva"></option>
-                      <option value="Chamonix"></option>
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+                      <option value="Los Angeles"></option>
+                      <option value="">New York</option>
+                      <option value="">Chicago</option>
+                      <option value="">Houston</option>
+                      <option value="">Phoenix</option>
+                      <option value="">Philadelphia</option>
+                      <option value="">San Antonio</option>
+                      <option value="">San Diego</option>
+                      <option value="">Dallas</option>
+                      <option value="San Francisco"></option>
+
+=======
+                      ${destinationsListTemplate}
+>>>>>>> Stashed changes
+=======
+                      ${destinationsListTemplate}
+>>>>>>> Stashed changes
+=======
+                      ${destinationsListTemplate}
+>>>>>>> Stashed changes
                     </datalist>
                   </div>
 
@@ -124,13 +221,13 @@ function createEditingFormTemplate(point) {
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
                     <div class="event__available-offers">
-                      ${offersTemplate}
+                  ${offersTemplate}
                     </div>
                   </section>
 
                   <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-                    <p class="event__destination-description">${destination.description}</p>
+                    <p class="event__destination-description">${destinationsDescription}</p>
                   </section>
                 </section>
               </form>
@@ -138,31 +235,343 @@ function createEditingFormTemplate(point) {
 `;
 }
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 export default class EditingFormView extends AbstractView {
   #point = null;
   #handleFormSubmit = null;
   #handleEditClick = null;
-  constructor({ point, onFormSubmit, onButtonClick }) {
+  #handleHideForm = null;
+  constructor({ point, onFormSubmit, onButtonClick, onFormHide }) {
     super();
     this.#point = point;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleEditClick = onButtonClick;
+    this.#handleHideForm = onFormHide;
 
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#buttonClickHandler);
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#resetButtonClick);
     this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+=======
+
+=======
+
+>>>>>>> Stashed changes
+=======
+
+>>>>>>> Stashed changes
+=======
+
+>>>>>>> Stashed changes
+export default class EditingFormView extends AbstractStatefulView {
+  #handleFormSubmit = null;
+  #datepickerStart = null;
+  #datepickerEnd = null;
+  #handleHideForm = null;
+  #handleDeleteClick = null;
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+
+  constructor({point, onFormSubmit, onFormHide, onDeleteClick }) {
+    super();
+    this._setState({ ...point });
+
+=======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+  #offers = null;
+  #destinations = null;
+  constructor({ point, offers, destinations, onFormSubmit, onFormHide, onDeleteClick }) {
+    super();
+    this._setState({ ...point });
+    this.#offers = offers;
+    this.#destinations = destinations;
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+    this.#handleFormSubmit = onFormSubmit;
+    this.#handleDeleteClick = onDeleteClick;
+    this.#handleHideForm = onFormHide;
+
+    this._restoreHandlers();
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
   }
 
   get template() {
-    return createEditingFormTemplate(this.#point);
+    return createEditingFormTemplate(this._state);
   }
 
-  #formSubmitHandler = (evt) => {
+  removeElement() {
+    super.removeElement();
+
+
+    if(this.#datepickerStart) {
+      this.#datepickerStart.destroy();
+      this.#datepickerStart = null;
+    }
+    if(this.#datepickerEnd) {
+      this.#datepickerEnd.destroy();
+      this.#datepickerEnd = null;
+    }
+  }
+
+  reset(point) {
+    this.updateElement(point);
+  }
+
+  _restoreHandlers() {
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#resetButtonClick);
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+    this.element.querySelectorAll('.event__type-input').forEach((input) => {
+      input.addEventListener('click', this.#typeChangeHandler);
+    });
+
+    this.element.querySelectorAll('.event__input--destination').forEach((input) => {
+      input.addEventListener('change', this.#destinationChangeHandler);
+    });
+    this.element.querySelectorAll('.event__offer-checkbox').forEach((input) => {
+      input.addEventListener('click', this.#offersChangeHandler);
+    });
+    this.element.querySelectorAll('.event__input--price').forEach((input) => {
+      input.addEventListener('change', this.#priceChangeHandler);
+    });
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
+    this.#setDatepickers();
+=======
+  }
+
+  get template() {
+    return createEditingFormTemplate(this._state, this.#offers, this.#destinations);
+>>>>>>> Stashed changes
+  }
+
+=======
+  }
+
+  get template() {
+    return createEditingFormTemplate(this._state, this.#offers, this.#destinations);
+  }
+
+>>>>>>> Stashed changes
+=======
+  }
+
+  get template() {
+    return createEditingFormTemplate(this._state, this.#offers, this.#destinations);
+  }
+
+>>>>>>> Stashed changes
+  get destinations() {
+    return this.#destinations;
+  }
+
+  get offers() {
+    return this.#offers;
+  }
+
+  parseStateTo(state) {
+    return {...state};
+  }
+
+  removeElement() {
+    super.removeElement();
+
+
+    if (this.#datepickerStart) {
+      this.#datepickerStart.destroy();
+      this.#datepickerStart = null;
+    }
+    if (this.#datepickerEnd) {
+      this.#datepickerEnd.destroy();
+      this.#datepickerEnd = null;
+    }
+  }
+
+  reset(point) {
+    this.updateElement(point);
+  }
+
+  _restoreHandlers() {
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#resetButtonClick);
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+    this.element.querySelectorAll('.event__type-input').forEach((input) => {
+      input.addEventListener('click', this.#typeChangeHandler);
+    });
+
+    this.element.querySelectorAll('.event__input--destination').forEach((input) => {
+      input.addEventListener('change', this.#destinationChangeHandler);
+    });
+    this.element.querySelectorAll('.event__offer-checkbox').forEach((input) => {
+      input.addEventListener('click', this.#offersChangeHandler);
+    });
+    this.element.querySelectorAll('.event__input--price').forEach((input) => {
+      input.addEventListener('change', this.#priceChangeHandler);
+    });
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
+    this.#setDatepickers();
+  }
+
+  #formSubmitHandler = async (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit();
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+    this.#handleFormSubmit(this.#point);
+=======
+    this.#handleFormSubmit(this._state.point);
+>>>>>>> Stashed changes
+=======
+    const updatedPoint = this.parseStateTo(this._state);
+    this.#handleFormSubmit(updatedPoint);
+>>>>>>> Stashed changes
+=======
+    const updatedPoint = this.parseStateTo(this._state);
+    this.#handleFormSubmit(updatedPoint);
+>>>>>>> Stashed changes
+=======
+    const updatedPoint = this.parseStateTo(this._state);
+    this.#handleFormSubmit(updatedPoint);
+>>>>>>> Stashed changes
   };
 
-  #buttonClickHandler = (evt) => {
+  #resetButtonClick = (evt) => {
     evt.preventDefault();
-    this.#handleEditClick();
+    this.#handleHideForm();
   };
+
+
+  #typeChangeHandler = (evt) => {
+    const target = evt.target;
+
+    const pointType = target.value;
+
+    this.updateElement({
+      type: pointType,
+      offers: []
+    });
+
+  };
+
+  #destinationChangeHandler = (evt) => {
+    evt.preventDefault();
+    const cityName = evt.target.value;
+
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+    const destination = getDestinationByCityName(cityName);
+=======
+    const destination = this.destinations.find((dest) => dest.name === cityName);
+>>>>>>> Stashed changes
+=======
+    const destination = this.destinations.find((dest) => dest.name === cityName);
+>>>>>>> Stashed changes
+=======
+    const destination = this.destinations.find((dest) => dest.name === cityName);
+>>>>>>> Stashed changes
+    if (destination) {
+      this.updateElement({
+        destinationID: destination.id
+      });
+    } else {
+      setSaveButtonDisabled();
+    }
+  };
+
+  #offersChangeHandler = (evt) => {
+    const offerId = Number(evt.target.id);
+    this.updateElement({
+      offers: this._state.offers.includes(offerId) ? this._state.offers.filter((id) => id !== offerId) : [...this._state.offers, offerId]
+    });
+  };
+
+  #priceChangeHandler = (evt) => {
+    evt.preventDefault();
+    const pointPrice = evt.target.value;
+
+    if (pointPrice > 0) {
+      this.updateElement({
+        ...this._state.point,
+        price: pointPrice
+      });
+    } else {
+      setSaveButtonDisabled();
+    }
+  };
+
+  #closeDateStartHandler = ([date]) => {
+    this.updateElement({
+      startDate: date,
+    });
+  };
+
+  #closeDateEndHandler = ([date]) => {
+    this.updateElement({
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+
+      endDate: date,
+
+=======
+      endDate: date,
+>>>>>>> Stashed changes
+=======
+      endDate: date,
+>>>>>>> Stashed changes
+=======
+      endDate: date,
+>>>>>>> Stashed changes
+    });
+  };
+
+  #setDatepickers = () => {
+
+    this.#datepickerStart = flatpickr(this.element.querySelector('#event-start-time-1'), {
+      ...FLATPICKR_CONFIG,
+      defaultDate: this._state.startDate,
+      onChange: this.#closeDateStartHandler,
+      maxDate: this._state.endDate,
+    });
+
+    this.#datepickerEnd = flatpickr(this.element.querySelector('#event-end-time-1'), {
+      ...FLATPICKR_CONFIG,
+      defaultDate: this._state.endDate,
+      onChange: this.#closeDateEndHandler,
+      minDate: this._state.startDate,
+    });
+  };
+
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+  #formDeleteClickHandler = (evt) =>{
+=======
+  #formDeleteClickHandler = (evt) => {
+>>>>>>> Stashed changes
+=======
+  #formDeleteClickHandler = (evt) => {
+>>>>>>> Stashed changes
+=======
+  #formDeleteClickHandler = (evt) => {
+>>>>>>> Stashed changes
+    evt.preventDefault();
+    this.#handleDeleteClick(this._state);
+  };
+
+  get parseStateToPoint() {
+    return this._state;
+  }
 }

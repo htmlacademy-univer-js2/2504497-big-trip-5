@@ -1,87 +1,114 @@
-import FilterView from '../view/filters.js';
-import { remove, render } from '../framework/render.js';
-import { UpdateType } from '../const.js';
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+import {render, replace, remove} from '../framework/render.js';
+import FilterView from '../view/filter.js';
+import { FilterType,UpdateType } from '../mock/const.js';
+=======
+=======
+>>>>>>> Stashed changes
+import { render, replace, remove } from '../framework/render.js';
+import FilterView from '../view/filter.js';
 
-/**
- * Presenter class for managing filters in the application
- * Handles the interaction between filter model and view
- */
-class FilterPresenter {
-  /** @type {Object} Model for managing events data */
-  #eventsModel = null;
-  /** @type {Object} Model for managing filter state */
+
+import { FilterType, UpdateType } from '../mock/const.js';
+
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+import { render, replace, remove } from '../framework/render.js';
+import FilterView from '../view/filter.js';
+import { FilterType, UpdateType } from '../mock/const.js';
+import { filter } from '../utils/filter.js';
+>>>>>>> Stashed changes
+
+export default class FilterPresenter {
+  #filterContainer = null;
   #filterModel = null;
-  /** @type {HTMLElement} Container element for filter component */
-  #container = null;
-  /** @type {FilterView} Instance of filter view component */
-  #view = null;
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+  #pointModel = null;
 
-  /**
-   * Creates an instance of FilterPresenter
-   * @param {HTMLElement} container - Container element for filter component
-   * @param {Object} eventsModel - Model for managing events data
-   * @param {Object} filterModel - Model for managing filter state
-   */
-  constructor(container, eventsModel, filterModel) {
-    this.#container = container;
-    this.#eventsModel = eventsModel;
+  #filterComponent = null;
+
+  constructor({filterContainer, filterModel, pointModel}) {
+    this.#filterContainer = filterContainer;
     this.#filterModel = filterModel;
+    this.#pointModel = pointModel;
 
-    this.#eventsModel.addObserver(this.#onModelChange);
-    this.#filterModel.addObserver(this.#onModelChange);
+    this.#pointModel.addObserver(this.#handleModelEvent);
+=======
+=======
+>>>>>>> Stashed changes
+  #pointsModel = null;
+
+=======
+  #pointsModel = null;
+>>>>>>> Stashed changes
+  #filterComponent = null;
+
+  constructor({ filterContainer, filterModel, pointsModel }) {
+    this.#filterContainer = filterContainer;
+    this.#filterModel = filterModel;
+    this.#pointsModel = pointsModel;
+
+    this.#pointsModel.addObserver(this.#handleModelEvent);
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
-  /**
-   * Initializes the filter presenter
-   * Renders the initial filter view
-   */
+  get filters() {
+<<<<<<< Updated upstream
+
+
+    return Object.values(FilterType).map((type) => ({
+      type
+=======
+    const points = this.#pointsModel.points;
+    return Object.values(FilterType).map((type) => ({
+      type,
+      count: filter[type](points).length
+>>>>>>> Stashed changes
+    }));
+  }
+
   init() {
-    this.#renderView();
-  }
+    const filters = this.filters;
+    const prevFilterComponent = this.#filterComponent;
 
-  /**
-   * Getter for events data
-   * @returns {Array} Array of event points
-   */
-  get events() {
-    return this.#eventsModel.events;
-  }
-
-  /**
-   * Handles model changes
-   * Re-renders filters when events or filter state changes
-   * @private
-   */
-  #onModelChange = () => {
-    this.#renderView();
-  };
-
-  /**
-   * Handles filter change events
-   * Updates the filter model with new filter type
-   * @param {string} filterType - Type of filter to apply
-   * @private
-   */
-  #onFilterChange = (filterType) => {
-    this.#filterModel.setFilter(UpdateType.MAJOR, filterType);
-  };
-
-  /**
-   * Renders the filter component
-   * Removes existing component if present and creates a new one
-   * @private
-   */
-  #renderView() {
-    if (this.#view) {
-      remove(this.#view);
-    }
-    this.#view = new FilterView({
-      points: this.events,
-      currentFilter: this.#filterModel.filter,
-      onFilterChange: this.#onFilterChange,
+    this.#filterComponent = new FilterView({
+      filters,
+      currentFilterType: this.#filterModel.filter,
+      onFilterTypeChange: this.#handleFilterTypeChange
     });
-    render(this.#view, this.#container);
-  }
-}
 
-export default FilterPresenter;
+    if (prevFilterComponent === null) {
+      render(this.#filterComponent, this.#filterContainer);
+      return;
+    }
+
+    replace(this.#filterComponent, prevFilterComponent);
+    remove(prevFilterComponent);
+  }
+
+  #handleModelEvent = () => {
+    this.init();
+  };
+
+  #handleFilterTypeChange = (filterType) => {
+    if (this.#filterModel.filter === filterType) {
+      return;
+    }
+
+    this.#filterModel.setFilter(UpdateType.MINOR, filterType);
+  };
+}
